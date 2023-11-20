@@ -1,5 +1,6 @@
 package com.raerossi.pokedex.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFFAF2D31)
@@ -64,5 +65,14 @@ val md_theme_dark_scrim = Color(0xFF000000)
 
 val md_primary_keyColors = Color(0xFFDC4E4E)
 val md_surface_containerHighest = Color(0xFF3A3333)
+val md_ref_neutral95 = Color(0xFFFBEEEE)
+
+val md_bottomsheet_gradient = Brush.verticalGradient(
+    colors = listOf(
+        Color(0xFF120D0D),
+        Color(0xFF2B292B),
+        Color(0xFF120D0D)
+    )
+)
 
 val seed = Color(0xFFDC4E4E)

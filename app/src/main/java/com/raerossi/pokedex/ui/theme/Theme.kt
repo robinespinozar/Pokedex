@@ -11,6 +11,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -85,6 +86,8 @@ private val DarkColorScheme = darkColorScheme(
 val ColorScheme.primaryKeyColor: Color @Composable get() = md_primary_keyColors
 val ColorScheme.searchBarContainer: Color @Composable get() = md_surface_containerHighest
 val ColorScheme.onSearchBarContainer: Color @Composable get() = md_theme_dark_onSurfaceVariant
+val ColorScheme.bottomSheetContainer: Brush @Composable get() = md_bottomsheet_gradient
+val ColorScheme.onBottomSheetContainer: Color @Composable get() = md_ref_neutral95
 
 @Composable
 fun PokedexTheme(

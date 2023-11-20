@@ -63,10 +63,13 @@ fun SearchBar(modifier: Modifier = Modifier) {
                 )
             }
         },
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = MaterialTheme.colorScheme.onSearchBarContainer,
-            placeholderColor = MaterialTheme.colorScheme.onSearchBarContainer,
-            containerColor = MaterialTheme.colorScheme.searchBarContainer,
+        colors = TextFieldDefaults.colors(
+            unfocusedTextColor = MaterialTheme.colorScheme.onSearchBarContainer,
+            focusedTextColor =  MaterialTheme.colorScheme.onSearchBarContainer,
+            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSearchBarContainer,
+            focusedPlaceholderColor = MaterialTheme.colorScheme.onSearchBarContainer,
+            unfocusedContainerColor = MaterialTheme.colorScheme.searchBarContainer,
+            focusedContainerColor = MaterialTheme.colorScheme.searchBarContainer,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),
