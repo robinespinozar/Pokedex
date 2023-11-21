@@ -29,10 +29,10 @@ data class PokemonDetail(
     fun getIdFormat(): String = String.format("N° %03d", id)
     fun getWeightFormat(): String = String.format("%.1f kg", weight.toFloat() / 10)
     fun getHeightFormat(): String = String.format("%.1f m", height.toFloat() / 10)
-    fun getHpValue(): Float = (stats[0].baseStat) * 1f
-    fun getAttackValue(): Float = (stats[1].baseStat) * 1f
-    fun getDefenseValue(): Float = (stats[2].baseStat) * 1f
-    fun getSpeedValue(): Float = (stats[5].baseStat) * 1f
+    fun getHpValue(): Float = (stats[0].baseStat) * 0.005f
+    fun getAttackValue(): Float = (stats[1].baseStat) * 0.005f
+    fun getDefenseValue(): Float = (stats[2].baseStat) * 0.005f
+    fun getSpeedValue(): Float = (stats[5].baseStat) * 0.005f
     fun getHpFormat(): String {
         val hp = stats[0].baseStat
         return "$hp/200"

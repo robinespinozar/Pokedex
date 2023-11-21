@@ -119,7 +119,6 @@ fun PokemonList(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel
 ) {
-    val context = LocalContext.current
     val pokemonList by homeViewModel.pokemonList.observeAsState(emptyList())
 
     LazyVerticalGrid(
@@ -133,7 +132,6 @@ fun PokemonList(
                 pokemon = pokemon,
                 homeViewModel = homeViewModel
             ) {
-                Toast.makeText(context, it.name, Toast.LENGTH_SHORT).show()
                 homeViewModel.openBottomSheet(it.getId())
             }
         }

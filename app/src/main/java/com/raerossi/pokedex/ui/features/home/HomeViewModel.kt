@@ -22,8 +22,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getPokemonsUseCase: GetPokemonsUseCase,
     private val getDetailUseCase: GetDetailUseCase
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _pokemonList = MutableLiveData<List<Pokemon>>()
     val pokemonList: LiveData<List<Pokemon>> = _pokemonList
