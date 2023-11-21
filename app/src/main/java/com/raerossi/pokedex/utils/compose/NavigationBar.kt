@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.raerossi.pokedex.domain.NavBarItem
 import com.raerossi.pokedex.ui.theme.PokedexTheme
 import com.raerossi.pokedex.ui.theme.primaryKeyColor
+import com.raerossi.pokedex.utils.extensions.navigationShadow
 
 @Composable
 fun NavigationBar(modifier: Modifier = Modifier) {
@@ -40,6 +41,7 @@ fun NavigationBar(modifier: Modifier = Modifier) {
     BottomNavigation(
         modifier
             .height(74.dp)
+            .navigationShadow()
             .background(color = Color(0xFF2B292B))
             .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
         backgroundColor = MaterialTheme.colorScheme.primaryKeyColor

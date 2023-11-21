@@ -3,6 +3,7 @@ package com.raerossi.pokedex.utils.compose
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,9 +20,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.raerossi.pokedex.R
-import com.raerossi.pokedex.ui.features.home.HomeScreen
 import com.raerossi.pokedex.ui.theme.PokedexTheme
 import com.raerossi.pokedex.ui.theme.primaryKeyColor
+import com.raerossi.pokedex.utils.extensions.largeShadow
+import com.raerossi.pokedex.utils.extensions.mediumShadow
+import com.raerossi.pokedex.utils.extensions.shadow
+import com.raerossi.pokedex.utils.extensions.smallShadow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,8 +35,7 @@ fun TopBar(
     onBackClick : () -> Unit
 ) {
     TopAppBar(
-        modifier = modifier
-            .height(48.dp),
+        modifier = modifier.smallShadow().height(48.dp),
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryKeyColor,
             titleContentColor = Color.White,

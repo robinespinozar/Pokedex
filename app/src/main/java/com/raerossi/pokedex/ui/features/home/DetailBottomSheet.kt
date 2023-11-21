@@ -56,6 +56,7 @@ import com.raerossi.pokedex.ui.theme.PokedexTheme
 import com.raerossi.pokedex.ui.theme.bottomSheetContainer
 import com.raerossi.pokedex.ui.theme.onBottomSheetContainer
 import com.raerossi.pokedex.utils.PokemonTypeUtils
+import com.raerossi.pokedex.utils.extensions.largeShadow
 import kotlinx.coroutines.launch
 
 
@@ -68,9 +69,12 @@ fun DetailBottomSheet(homeViewModel: HomeViewModel) {
 
     if (isSheetOpen) {
         ModalBottomSheet(
-            containerColor = Color(0xFF141010),
+            containerColor = Color(0xFF1C1B1E),
             onDismissRequest = { homeViewModel.hideBottomSheet() },
-            sheetState = sheetState
+            sheetState = sheetState,
+            dragHandle = {
+                DragHandle { BottomSheetDefaults.DragHandle(color = Color(0xFF4C494F)) }
+            }
         ) {
             ModalBottomSheetContent(homeViewModel = homeViewModel) {
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
@@ -83,6 +87,15 @@ fun DetailBottomSheet(homeViewModel: HomeViewModel) {
     }
 }
 
+@Composable
+fun DragHandle(setDragHandle: @Composable () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        setDragHandle()
+    }
+}
 
 @Composable
 fun ModalBottomSheetContent(
@@ -311,7 +324,7 @@ fun PokemonImage(
     onFavoriteClick: () -> Unit
 ) {
     Column(
-        modifier.fillMaxWidth()
+        modifier.largeShadow().fillMaxWidth()
     ) {
         var backgroundColor by remember { mutableStateOf(Color.Transparent) }
 
