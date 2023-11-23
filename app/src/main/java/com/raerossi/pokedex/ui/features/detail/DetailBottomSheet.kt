@@ -1,4 +1,4 @@
-package com.raerossi.pokedex.ui.features.home
+package com.raerossi.pokedex.ui.features.detail
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,7 +21,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -52,6 +50,7 @@ import coil.request.ImageRequest
 import com.raerossi.pokedex.R
 import com.raerossi.pokedex.domain.PokemonDetail
 import com.raerossi.pokedex.domain.Types
+import com.raerossi.pokedex.ui.features.home.HomeViewModel
 import com.raerossi.pokedex.ui.theme.PokedexTheme
 import com.raerossi.pokedex.ui.theme.bottomSheetContainer
 import com.raerossi.pokedex.ui.theme.onBottomSheetContainer
