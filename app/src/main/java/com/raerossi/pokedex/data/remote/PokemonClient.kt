@@ -1,7 +1,7 @@
 package com.raerossi.pokedex.data.remote
 
 import com.raerossi.pokedex.data.remote.response.PokemonResponse
-import com.raerossi.pokedex.domain.PokemonDetail
+import com.raerossi.pokedex.data.remote.model.PokemonDetail
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

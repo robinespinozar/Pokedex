@@ -1,5 +1,6 @@
 package com.raerossi.pokedex.ui.features.main
 
+import android.app.Activity
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -49,10 +51,12 @@ import com.raerossi.pokedex.utils.extensions.smallShadow
 @Composable
 fun MainScreen() {
     SetStatusBarColor(colorStatusBar = Color(0xFFDC4E4E), colorNavigationBar = Color(0xFFEFF3F4))
+    val activity = LocalContext.current as Activity
+    var title by remember{ mutableStateOf("Pokedex")}
     val navController = rememberNavController()
 
     Scaffold(
-        topBar = { TopBar(text = "Pokedex") { } },
+        topBar = { TopBar(text = title) { activity.finish() } },
         bottomBar = {
             NavigationBar {
                 navController.navigate(it.route)
@@ -60,6 +64,7 @@ fun MainScreen() {
                     popUpTo(navController.graph.findStartDestination().id)
                     launchSingleTop = true
                 }
+                title = it.title
             }
         }
     ) { padding ->

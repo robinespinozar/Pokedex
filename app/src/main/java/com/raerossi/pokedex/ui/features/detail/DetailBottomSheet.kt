@@ -32,7 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -45,12 +44,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.raerossi.pokedex.R
-import com.raerossi.pokedex.domain.PokemonDetail
-import com.raerossi.pokedex.domain.Types
-import com.raerossi.pokedex.ui.features.home.HomeViewModel
+import com.raerossi.pokedex.data.remote.model.PokemonDetail
+import com.raerossi.pokedex.data.remote.model.Types
 import com.raerossi.pokedex.ui.theme.PokedexTheme
 import com.raerossi.pokedex.ui.theme.bottomSheetContainer
 import com.raerossi.pokedex.ui.theme.onBottomSheetContainer
@@ -61,27 +60,33 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailBottomSheet(homeViewModel: HomeViewModel) {
-    val isSheetOpen by homeViewModel.isSheetOpen.observeAsState(false)
+fun DetailBottomSheet(detailViewModel: DetailViewModel = hiltViewModel()) {
+    val isSheetOpen by detailViewModel.isSheetOpen.observeAsState(false)
+    val isSheetLoading by detailViewModel.isSheetLoading.observeAsState(false)
+    val detail by detailViewModel.detail.observeAsState()
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     if (isSheetOpen) {
         ModalBottomSheet(
             containerColor = Color(0xFF1C1B1E),
-            onDismissRequest = { homeViewModel.hideBottomSheet() },
+            onDismissRequest = { detailViewModel.hideBottomSheet() },
             sheetState = sheetState,
             dragHandle = {
                 DragHandle { BottomSheetDefaults.DragHandle(color = Color(0xFF4C494F)) }
             }
         ) {
-            ModalBottomSheetContent(homeViewModel = homeViewModel) {
-                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible) {
-                        homeViewModel.hideBottomSheet()
+            ModalBottomSheetContent(
+                detail = detail,
+                isSheetLoading = isSheetLoading,
+                onHideClick = {
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            detailViewModel.hideBottomSheet()
+                        }
                     }
                 }
-            }
+            )
         }
     }
 }
@@ -98,25 +103,22 @@ fun DragHandle(setDragHandle: @Composable () -> Unit) {
 
 @Composable
 fun ModalBottomSheetContent(
-    homeViewModel: HomeViewModel,
+    detail: PokemonDetail?,
+    isSheetLoading: Boolean,
     onHideClick: () -> Unit
 ) {
-    val isSheetLoading by homeViewModel.isSheetLoading.observeAsState(false)
-
     if (isSheetLoading) {
         LoadingSheet()
     } else {
-        SheetContent(homeViewModel = homeViewModel) { onHideClick() }
+        SheetContent(detail = detail) { onHideClick() }
     }
 }
 
 @Composable
 fun SheetContent(
-    homeViewModel: HomeViewModel,
+    detail: PokemonDetail?,
     onHideClick: () -> Unit
 ) {
-    val detail by homeViewModel.detail.observeAsState()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -126,7 +128,6 @@ fun SheetContent(
     ) {
         PokemonImage(
             imageUrl = detail!!.sprite.other.oficialArt.imagen,
-            homeViewModel = homeViewModel,
             onHideClick = { onHideClick() },
             onFavoriteClick = { }
         )
@@ -318,25 +319,22 @@ fun PhysicalAttribute(
 fun PokemonImage(
     modifier: Modifier = Modifier,
     imageUrl: String,
-    homeViewModel: HomeViewModel,
     onHideClick: () -> Unit,
     onFavoriteClick: () -> Unit
 ) {
     Column(
-        modifier.largeShadow().fillMaxWidth()
+        modifier
+            .largeShadow()
+            .fillMaxWidth()
     ) {
-        var backgroundColor by remember { mutableStateOf(Color.Transparent) }
-
         SheetBar(
-            homeViewModel = homeViewModel,
-            backgroundColor = backgroundColor,
             onHideClick = { onHideClick() },
-            onFavoriteClick = { /*TODO*/ }
+            onFavoriteClick = { onFavoriteClick() }
         )
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(backgroundColor)
+                .background(Color.Transparent)
                 .height(200.dp)
                 .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
             model = ImageRequest.Builder(LocalContext.current)
@@ -344,21 +342,13 @@ fun PokemonImage(
                 .crossfade(true)
                 .build(),
             contentScale = ContentScale.Fit,
-            contentDescription = "pokemon image",
-            onSuccess = { success ->
-                val drawable = success.result.drawable
-                homeViewModel.getBackgroundColor(drawable) { color ->
-                    backgroundColor = color
-                }
-            }
+            contentDescription = "pokemon image"
         )
     }
 }
 
 @Composable
 fun SheetBar(
-    homeViewModel: HomeViewModel,
-    backgroundColor: Color,
     onHideClick: () -> Unit,
     onFavoriteClick: () -> Unit
 ) {
@@ -366,7 +356,8 @@ fun SheetBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
-            .background(backgroundColor), horizontalArrangement = Arrangement.SpaceBetween
+            .background(Color.Transparent),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         var isFavorite by rememberSaveable { mutableStateOf(false) }
 

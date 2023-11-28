@@ -2,14 +2,12 @@ package com.raerossi.pokedex.ui.features.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,61 +22,46 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.raerossi.pokedex.R
+import com.raerossi.pokedex.data.remote.model.Pokemon
 import com.raerossi.pokedex.ui.features.detail.DetailBottomSheet
 import com.raerossi.pokedex.ui.features.pokemonlist.PokemonList
-import com.raerossi.pokedex.ui.theme.PokedexTheme
+import com.raerossi.pokedex.ui.features.utils.LoadingScreen
 import com.raerossi.pokedex.ui.theme.onSearchBarContainer
 import com.raerossi.pokedex.ui.theme.searchBarContainer
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     val isLoading by homeViewModel.isLoading.observeAsState(false)
+    val pokemonList by homeViewModel.pokemonList.observeAsState(emptyList())
 
     if (isLoading) {
         LoadingScreen()
     } else {
-        ScreenContent(homeViewModel = homeViewModel, modifier = modifier)
-    }
-}
-
-@Composable
-private fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = Color(0xFF2B292B)),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+        ScreenContent(pokemonList = pokemonList, modifier = modifier)
     }
 }
 
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel
+    pokemonList: List<Pokemon>
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = Color(0xFF2B292B))
     ) {
-        SearchBar(Modifier.padding(all = 16.dp))
-        PokemonList(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            homeViewModel = homeViewModel
-        )
-        DetailBottomSheet(homeViewModel = homeViewModel)
+        SearchBar()
+        PokemonList(pokemonList = pokemonList)
+        DetailBottomSheet()
     }
 }
 
@@ -88,6 +71,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
 
     TextField(
         modifier = modifier
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
             .height(48.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
@@ -133,13 +117,4 @@ fun SearchBar(modifier: Modifier = Modifier) {
             )
         }
     )
-}
-
-
-@Composable
-@Preview(showBackground = true)
-fun HomeScreenPreview() {
-    PokedexTheme {
-        // HomeScreen(HomeViewModel())
-    }
 }

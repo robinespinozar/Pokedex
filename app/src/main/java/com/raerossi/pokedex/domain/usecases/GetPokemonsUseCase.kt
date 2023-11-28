@@ -1,7 +1,7 @@
 package com.raerossi.pokedex.domain.usecases
 
 import com.raerossi.pokedex.data.PokemonRepository
-import com.raerossi.pokedex.domain.Pokemon
+import com.raerossi.pokedex.data.remote.model.Pokemon
 import javax.inject.Inject
 
 class GetPokemonsUseCase @Inject constructor(private val repository: PokemonRepository) {

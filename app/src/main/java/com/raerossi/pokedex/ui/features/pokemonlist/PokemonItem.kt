@@ -1,5 +1,6 @@
 package com.raerossi.pokedex.ui.features.pokemonlist
 
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,43 +27,51 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.raerossi.pokedex.domain.Pokemon
-import com.raerossi.pokedex.ui.features.home.HomeViewModel
+import com.raerossi.pokedex.data.remote.model.Pokemon
 import com.raerossi.pokedex.ui.theme.PokedexTheme
 
 @Composable
 fun PokemonItem(
-    modifier: Modifier = Modifier,
+    pokemonListViewModel: PokemonListViewModel = hiltViewModel(),
     pokemon: Pokemon,
-    homeViewModel: HomeViewModel,
     onClick: (Pokemon) -> Unit
 ) {
+    var backgroundColor by remember { mutableStateOf(Color.White) }
+
     Card(
-        modifier
+        Modifier
             .height(234.dp)
             .clickable { onClick(pokemon) },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, Color(0xFFE3E3E3))
     ) {
-        CardContent(pokemon = pokemon, homeViewModel = homeViewModel)
+        CardContent(
+            pokemon = pokemon,
+            backgroundColor = backgroundColor,
+            onSetBackgroundColor = { drawable ->
+                pokemonListViewModel.getBackgroundColor(drawable) { color ->
+                    backgroundColor = color
+                }
+            })
     }
 }
 
 @Composable
 fun CardContent(
     modifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel,
-    pokemon: Pokemon
+    pokemon: Pokemon,
+    backgroundColor: Color,
+    onSetBackgroundColor: (Drawable) -> Unit
 ) {
     Column(
         modifier.fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val id = pokemon.getId()
-        var backgroundColor by remember { mutableStateOf(Color.White) }
 
         AsyncImage(
             modifier = Modifier
@@ -78,9 +87,7 @@ fun CardContent(
             contentDescription = "pokemon image",
             onSuccess = { success ->
                 val drawable = success.result.drawable
-                homeViewModel.getBackgroundColor(drawable) { color ->
-                    backgroundColor = color
-                }
+                onSetBackgroundColor(drawable)
             }
         )
         Divider(color = Color(0xFFE3E3E3), thickness = 1.dp)

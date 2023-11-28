@@ -1,7 +1,7 @@
 package com.raerossi.pokedex.data.remote
 
-import com.raerossi.pokedex.domain.Pokemon
-import com.raerossi.pokedex.domain.PokemonDetail
+import com.raerossi.pokedex.data.remote.model.Pokemon
+import com.raerossi.pokedex.data.remote.model.PokemonDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
