@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.raerossi.pokedex.data.remote.model.Pokemon
+import com.raerossi.pokedex.domain.Pokemon
 import com.raerossi.pokedex.ui.features.detail.DetailViewModel
 
 @Composable

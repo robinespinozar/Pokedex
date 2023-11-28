@@ -9,7 +9,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.raerossi.pokedex.data.remote.model.Pokemon
+import com.raerossi.pokedex.domain.Pokemon
 import com.raerossi.pokedex.ui.features.detail.DetailBottomSheet
 import com.raerossi.pokedex.ui.features.pokemonlist.PokemonList
 import com.raerossi.pokedex.ui.features.utils.LoadingScreen

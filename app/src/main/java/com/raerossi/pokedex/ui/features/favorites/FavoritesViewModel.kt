@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.raerossi.pokedex.data.remote.model.Pokemon
+import com.raerossi.pokedex.domain.Pokemon
 import com.raerossi.pokedex.domain.usecases.GetFavoritesPokemonsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

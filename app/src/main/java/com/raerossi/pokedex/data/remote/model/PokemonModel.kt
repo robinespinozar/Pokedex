@@ -2,7 +2,7 @@ package com.raerossi.pokedex.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Pokemon(
+data class PokemonModel(
     @SerializedName("name") val name: String,
     @SerializedName("url") val url: String,
     val detail: PokemonDetail

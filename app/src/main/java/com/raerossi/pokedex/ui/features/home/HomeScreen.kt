@@ -27,7 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.raerossi.pokedex.R
-import com.raerossi.pokedex.data.remote.model.Pokemon
+import com.raerossi.pokedex.domain.Pokemon
 import com.raerossi.pokedex.ui.features.detail.DetailBottomSheet
 import com.raerossi.pokedex.ui.features.pokemonlist.PokemonList
 import com.raerossi.pokedex.ui.features.utils.LoadingScreen

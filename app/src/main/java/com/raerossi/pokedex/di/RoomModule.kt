@@ -18,7 +18,7 @@ object RoomModule {
     @Singleton
     @Provides
     fun provideRoom(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, PokemonDataBase::class.java, POKEDEX_DATABASE)
+        Room.databaseBuilder(context, PokemonDataBase::class.java, POKEDEX_DATABASE).fallbackToDestructiveMigration().build()
 
     @Singleton
     @Provides

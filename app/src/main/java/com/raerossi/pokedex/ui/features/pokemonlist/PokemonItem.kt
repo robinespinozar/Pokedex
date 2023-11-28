@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.raerossi.pokedex.data.remote.model.Pokemon
+import com.raerossi.pokedex.domain.Pokemon
 import com.raerossi.pokedex.ui.theme.PokedexTheme
 
 @Composable
