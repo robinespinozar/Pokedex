@@ -8,6 +8,7 @@ import com.raerossi.pokedex.domain.Pokemon
 import com.raerossi.pokedex.domain.usecases.GetFilterPokemonsUseCase
 import com.raerossi.pokedex.domain.usecases.GetPokemonsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
