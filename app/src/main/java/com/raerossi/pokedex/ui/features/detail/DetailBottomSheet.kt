@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -60,17 +61,24 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailBottomSheet(detailViewModel: DetailViewModel = hiltViewModel()) {
+fun DetailBottomSheet(
+    detailViewModel: DetailViewModel = hiltViewModel(),
+    onReloadScreen: () -> Unit
+) {
     val isSheetOpen by detailViewModel.isSheetOpen.observeAsState(false)
     val isSheetLoading by detailViewModel.isSheetLoading.observeAsState(false)
     val detail by detailViewModel.detail.observeAsState()
+    val isFavorite by detailViewModel.isFavorite.observeAsState(false)
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     if (isSheetOpen) {
         ModalBottomSheet(
             containerColor = Color(0xFF1C1B1E),
-            onDismissRequest = { detailViewModel.hideBottomSheet() },
+            onDismissRequest = {
+                detailViewModel.hideBottomSheet()
+                onReloadScreen()
+            },
             sheetState = sheetState,
             dragHandle = {
                 DragHandle { BottomSheetDefaults.DragHandle(color = Color(0xFF4C494F)) }
@@ -78,14 +86,17 @@ fun DetailBottomSheet(detailViewModel: DetailViewModel = hiltViewModel()) {
         ) {
             ModalBottomSheetContent(
                 detail = detail,
+                isFavorite = isFavorite,
                 isSheetLoading = isSheetLoading,
                 onHideClick = {
                     scope.launch { sheetState.hide() }.invokeOnCompletion {
                         if (!sheetState.isVisible) {
                             detailViewModel.hideBottomSheet()
+                            onReloadScreen()
                         }
                     }
-                }
+                },
+                onFavoriteClick = { detailViewModel.updateFavoritePokemon(it, detail!!.id) }
             )
         }
     }
@@ -104,20 +115,29 @@ fun DragHandle(setDragHandle: @Composable () -> Unit) {
 @Composable
 fun ModalBottomSheetContent(
     detail: PokemonDetail?,
+    isFavorite: Boolean,
     isSheetLoading: Boolean,
-    onHideClick: () -> Unit
+    onHideClick: () -> Unit,
+    onFavoriteClick: (Boolean) -> Unit
 ) {
     if (isSheetLoading) {
         LoadingSheet()
     } else {
-        SheetContent(detail = detail) { onHideClick() }
+        SheetContent(
+            detail = detail,
+            isFavorite = isFavorite,
+            onHideClick = { onHideClick() },
+            onFavoriteClick = { onFavoriteClick(it) }
+        )
     }
 }
 
 @Composable
 fun SheetContent(
     detail: PokemonDetail?,
-    onHideClick: () -> Unit
+    isFavorite: Boolean,
+    onHideClick: () -> Unit,
+    onFavoriteClick: (Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -128,8 +148,9 @@ fun SheetContent(
     ) {
         PokemonImage(
             imageUrl = detail!!.sprite.other.oficialArt.imagen,
+            isFavorite = isFavorite,
             onHideClick = { onHideClick() },
-            onFavoriteClick = { }
+            onFavoriteClick = { onFavoriteClick(it) }
         )
         HeaderDetails(detail!!.getIdFormat(), detail!!.name)
         TypeDetails(typeList = getTypes(detail!!.types))
@@ -318,9 +339,10 @@ fun PhysicalAttribute(
 @Composable
 fun PokemonImage(
     modifier: Modifier = Modifier,
+    isFavorite: Boolean,
     imageUrl: String,
     onHideClick: () -> Unit,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: (Boolean) -> Unit
 ) {
     Column(
         modifier
@@ -328,8 +350,9 @@ fun PokemonImage(
             .fillMaxWidth()
     ) {
         SheetBar(
+            isFavorite = isFavorite,
             onHideClick = { onHideClick() },
-            onFavoriteClick = { onFavoriteClick() }
+            onFavoriteClick = { onFavoriteClick(it) }
         )
         AsyncImage(
             modifier = Modifier
@@ -349,9 +372,12 @@ fun PokemonImage(
 
 @Composable
 fun SheetBar(
+    isFavorite: Boolean,
     onHideClick: () -> Unit,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: (Boolean) -> Unit
 ) {
+    //var isFavoriteState by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -359,8 +385,6 @@ fun SheetBar(
             .background(Color.Transparent),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        var isFavorite by rememberSaveable { mutableStateOf(false) }
-
         IconButton(
             modifier = Modifier.padding(start = 8.dp),
             onClick = { onHideClick() }) {
@@ -372,7 +396,10 @@ fun SheetBar(
         }
         IconButton(
             modifier = Modifier.padding(end = 8.dp),
-            onClick = { isFavorite = !isFavorite }) {
+            onClick = {
+                //isFavoriteState = !isFavorite
+                onFavoriteClick(!isFavorite)
+            }) {
             Icon(
                 painter = if (isFavorite) painterResource(id = R.drawable.ic_favorite_star_filled) else painterResource(
                     id = R.drawable.ic_favorite_star

@@ -10,10 +10,18 @@ import com.raerossi.pokedex.domain.Pokemon
 data class PokemonEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id: Int = 0,
-    //@ColumnInfo(name = "idPokemon") val idPokemon: Int,
+    @ColumnInfo(name = "idPokemon") val idPokemon: Int,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "url") val url: String
-    //@ColumnInfo(name = "isFavorite") val isFavorite: Boolean
+    @ColumnInfo(name = "url") val url: String,
+    @ColumnInfo(name = "isFavorite") val isFavorite: Boolean,
+    @ColumnInfo(name = "fechaAddFavorite") val fechaAddFavorite: String?
 )
 
-fun Pokemon.toDataBase() = PokemonEntity(name = name, url = url)
+fun Pokemon.toDataBase() =
+    PokemonEntity(
+        name = name,
+        url = url,
+        isFavorite = isFavorite,
+        idPokemon = this.getId(),
+        fechaAddFavorite = fechaAddFavorite
+    )

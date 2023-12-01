@@ -27,7 +27,8 @@ fun FavoritesScreen(
     } else {
         ScreenContent(
             favoritesPokemonList = favoritesPokemonList,
-            modifier = modifier
+            modifier = modifier,
+            onReloadScreen = { favoritesViewModel.loadFavoritePokemons() }
         )
     }
 }
@@ -35,7 +36,8 @@ fun FavoritesScreen(
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
-    favoritesPokemonList: List<Pokemon>
+    favoritesPokemonList: List<Pokemon>,
+    onReloadScreen: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -43,6 +45,6 @@ private fun ScreenContent(
             .background(color = Color(0xFF2B292B))
     ) {
         PokemonList(pokemonList = favoritesPokemonList)
-        DetailBottomSheet()
+        DetailBottomSheet { onReloadScreen() }
     }
 }

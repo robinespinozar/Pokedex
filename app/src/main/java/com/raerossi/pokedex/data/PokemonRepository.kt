@@ -25,15 +25,38 @@ class PokemonRepository @Inject constructor(
         return response.map { it.toDomain() }
     }
 
-    suspend fun insertAllPokemons(listPokemons: List<PokemonEntity>){
+    suspend fun insertAllPokemons(listPokemons: List<PokemonEntity>) {
         dao.insertAllPokemons(listPokemons)
     }
 
-    suspend fun clearAllPokemons(){
+    suspend fun clearAllPokemons() {
         dao.deleteAllPokemons()
+    }
+
+    suspend fun updateFavoritePokemons(listFavorites: List<Pokemon>) {
+        listFavorites.forEach {
+            dao.updateFavoritePokemon(true, it.getId(), it.fechaAddFavorite)
+        }
+    }
+
+    suspend fun getFavoritesPokemons(): List<Pokemon> {
+        val response = dao.getFavoritesPokemons()
+        return response.map { it.toDomain() }
+    }
+
+    suspend fun isFavoritePokemon(id: Int): Boolean {
+        return dao.isFavoritePokemon(id)
+    }
+
+    suspend fun updateFavoritePokemon(isFavorite: Boolean, id: Int, fechaAddFavorite: String) {
+        dao.updateFavoritePokemon(isFavorite, id, fechaAddFavorite)
     }
 
     suspend fun getDetails(idPokemon: Int): PokemonDetail? {
         return api.getDetail(idPokemon)
+    }
+
+    suspend fun getFilterPokemons(name: String): List<Pokemon> {
+        return dao.getFilterPokemons(name)
     }
 }

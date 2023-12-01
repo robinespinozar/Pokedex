@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.raerossi.pokedex.data.local.dao.PokemonDao
 import com.raerossi.pokedex.data.local.entities.PokemonEntity
 
-@Database(entities = [PokemonEntity::class], version = 2, exportSchema = false)
+@Database(entities = [PokemonEntity::class], version = 4, exportSchema = false)
 abstract class PokemonDataBase : RoomDatabase() {
 
     abstract fun getPokemonDao(): PokemonDao

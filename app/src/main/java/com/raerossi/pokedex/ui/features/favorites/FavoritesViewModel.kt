@@ -23,10 +23,13 @@ class FavoritesViewModel @Inject constructor(
     val isLoading: LiveData<Boolean> = _isLoading
 
     init {
+        loadFavoritePokemons()
+    }
+
+    fun loadFavoritePokemons() {
         viewModelScope.launch {
             _isLoading.value = true
-            delay(5000)
-            //_favoritesPokemonList.value = getFavoritesPokemonsUseCase()
+            _favoritesPokemonList.value = getFavoritesPokemonsUseCase()
             _isLoading.value = false
         }
     }

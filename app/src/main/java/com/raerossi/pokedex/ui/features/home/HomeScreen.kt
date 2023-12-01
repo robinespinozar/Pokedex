@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import com.raerossi.pokedex.ui.features.pokemonlist.PokemonList
 import com.raerossi.pokedex.ui.features.utils.LoadingScreen
 import com.raerossi.pokedex.ui.theme.onSearchBarContainer
 import com.raerossi.pokedex.ui.theme.searchBarContainer
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(
@@ -41,34 +43,44 @@ fun HomeScreen(
 ) {
     val isLoading by homeViewModel.isLoading.observeAsState(false)
     val pokemonList by homeViewModel.pokemonList.observeAsState(emptyList())
+    val filterName by homeViewModel.filterName.observeAsState("")
 
     if (isLoading) {
         LoadingScreen()
     } else {
-        ScreenContent(pokemonList = pokemonList, modifier = modifier)
+        ScreenContent(
+            pokemonList = pokemonList,
+            modifier = modifier,
+            filterName = filterName,
+            onSearchTextChanged = { homeViewModel.getFilterPokemons(it) }
+        )
     }
 }
 
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
-    pokemonList: List<Pokemon>
+    filterName: String,
+    pokemonList: List<Pokemon>,
+    onSearchTextChanged: (String) -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = Color(0xFF2B292B))
     ) {
-        SearchBar()
+        SearchBar(filterName) { onSearchTextChanged(it) }
         PokemonList(pokemonList = pokemonList)
-        DetailBottomSheet()
+        DetailBottomSheet {}
     }
 }
 
 @Composable
-fun SearchBar(modifier: Modifier = Modifier) {
-    var name by remember { mutableStateOf("") }
-
+fun SearchBar(
+    filterName: String,
+    modifier: Modifier = Modifier,
+    onSearchTextChanged: (String) -> Unit
+) {
     TextField(
         modifier = modifier
             .padding(start = 16.dp, end = 16.dp, top = 16.dp)
@@ -84,8 +96,8 @@ fun SearchBar(modifier: Modifier = Modifier) {
                 color = Color.Transparent,
                 shape = RoundedCornerShape(24.dp)
             ),
-        value = name,
-        onValueChange = { name = it },
+        value = filterName,
+        onValueChange = { onSearchTextChanged(it) },
         textStyle = MaterialTheme.typography.labelLarge,
         singleLine = true,
         enabled = true,

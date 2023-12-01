@@ -4,18 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class PokemonModel(
     @SerializedName("name") val name: String,
-    @SerializedName("url") val url: String,
-    val detail: PokemonDetail
-) {
-    fun getImageUrl(index :Int): String = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$index.png"
-
-    fun getId(): Int {
-        val arrayUrl = url.split("/")
-        return arrayUrl[arrayUrl.size - 2].toInt()
-    }
-
-    fun getformatId(index :Int): String = "N° ${index.toString().padStart(3,'0')}"
-}
+    @SerializedName("url") val url: String
+)
 
 data class PokemonDetail(
     @SerializedName("id") val id: Int,
@@ -33,25 +23,6 @@ data class PokemonDetail(
     fun getAttackValue(): Float = (stats[1].baseStat) * 0.005f
     fun getDefenseValue(): Float = (stats[2].baseStat) * 0.005f
     fun getSpeedValue(): Float = (stats[5].baseStat) * 0.005f
-    fun getHpFormat(): String {
-        val hp = stats[0].baseStat
-        return "$hp/200"
-    }
-
-    fun getAttackFormat(): String {
-        val attack = stats[1].baseStat
-        return "$attack/200"
-    }
-
-    fun getDefenseFormat(): String {
-        val defense = stats[2].baseStat
-        return "$defense/200"
-    }
-
-    fun getSpeedFormat(): String {
-        val speed = stats[5].baseStat
-        return "$speed/200"
-    }
 }
 
 data class Stats(

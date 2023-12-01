@@ -13,8 +13,10 @@ class GetPokemonsUseCase @Inject constructor(private val repository: PokemonRepo
         return if (listPokemons.isEmpty()) {
             repository.getPokemonsFromDataBase()
         } else {
+            val listFavorites = repository.getFavoritesPokemons()
             repository.clearAllPokemons()
             repository.insertAllPokemons(listPokemons.map { it.toDataBase() })
+            repository.updateFavoritePokemons(listFavorites)
             listPokemons
         }
     }
