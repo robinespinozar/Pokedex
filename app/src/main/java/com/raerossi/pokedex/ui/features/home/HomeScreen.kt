@@ -48,29 +48,30 @@ fun HomeScreen(
     val isLoading by homeViewModel.isLoading.observeAsState(false)
     val pokemonList by homeViewModel.pokemonList.observeAsState(emptyList())
 
-    if (isLoading) {
-        LoadingScreen()
-    } else {
-        ScreenContent(
-            pokemonList = pokemonList,
-            modifier = modifier,
-            onSearchTextChanged = { homeViewModel.getFilterPokemons(it) }
-        )
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color(0xFF2B292B))
+    ) {
+        SearchBar { homeViewModel.getFilterPokemons(it) }
+        if (isLoading) {
+            LoadingScreen()
+        } else {
+            ScreenContent(pokemonList = pokemonList)
+        }
     }
 }
 
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
-    pokemonList: List<Pokemon>,
-    onSearchTextChanged: (String) -> Unit
+    pokemonList: List<Pokemon>
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = Color(0xFF2B292B))
     ) {
-        SearchBar() { onSearchTextChanged(it) }
         PokemonList(pokemonList = pokemonList)
         DetailBottomSheet {}
     }
