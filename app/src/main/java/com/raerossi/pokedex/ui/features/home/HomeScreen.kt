@@ -47,13 +47,14 @@ fun HomeScreen(
 ) {
     val isLoading by homeViewModel.isLoading.observeAsState(false)
     val pokemonList by homeViewModel.pokemonList.observeAsState(emptyList())
+    val filterName by homeViewModel.filterName.observeAsState("")
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = Color(0xFF2B292B))
     ) {
-        SearchBar { homeViewModel.getFilterPokemons(it) }
+        SearchBar(filterName) { homeViewModel.getFilterPokemons(it) }
         if (isLoading) {
             LoadingScreen()
         } else {
@@ -80,6 +81,7 @@ private fun ScreenContent(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
+    filterName: String,
     modifier: Modifier = Modifier,
     onSearchTextChanged: (String) -> Unit
 ) {
@@ -101,16 +103,13 @@ fun SearchBar(
                 color = Color.Transparent,
                 shape = RoundedCornerShape(24.dp)
             ),
-        value = text,
-        onValueChange = { text = it },
+        value = filterName,
+        onValueChange = { onSearchTextChanged(it) },
         textStyle = MaterialTheme.typography.labelLarge,
         singleLine = true,
         enabled = true,
         leadingIcon = {
-            IconButton(onClick = {
-                onSearchTextChanged(text)
-                keyboardController?.hide()
-            }) {
+            IconButton(onClick = { keyboardController?.hide() }) {
                 Icon(
                     modifier = Modifier.padding(start = 6.dp),
                     painter = painterResource(id = R.drawable.ic_search),
@@ -119,10 +118,7 @@ fun SearchBar(
                 )
             }
         },
-        keyboardActions = KeyboardActions(onDone = {
-            onSearchTextChanged(text)
-            keyboardController?.hide()
-        }),
+        keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
         colors = TextFieldDefaults.colors(
             unfocusedTextColor = MaterialTheme.colorScheme.onSearchBarContainer,
             focusedTextColor = MaterialTheme.colorScheme.onSearchBarContainer,

@@ -24,6 +24,9 @@ class HomeViewModel @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _filterName = MutableLiveData<String>()
+    val filterName: LiveData<String> = _filterName
+
     init {
         viewModelScope.launch {
             _isLoading.value = true
@@ -35,6 +38,7 @@ class HomeViewModel @Inject constructor(
     fun getFilterPokemons(filterName: String){
         viewModelScope.launch {
             _isLoading.value = true
+            _filterName.value = filterName
             _pokemonList.value = getFilterPokemonsUseCase(filterName.trim())
             _isLoading.value = false
         }
