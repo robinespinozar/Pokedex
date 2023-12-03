@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.Pokedex" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.SplashScreen.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_pokeball</item>
+        <item name="windowSplashScreenAnimationDuration">800</item>
+        <item name="postSplashScreenTheme">@style/Theme.Pokedex</item>
+    </style>
 </resources>

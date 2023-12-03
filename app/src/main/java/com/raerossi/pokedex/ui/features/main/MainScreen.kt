@@ -1,12 +1,16 @@
 package com.raerossi.pokedex.ui.features.main
 
 import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -52,7 +56,7 @@ import com.raerossi.pokedex.utils.extensions.smallShadow
 fun MainScreen() {
     SetStatusBarColor(colorStatusBar = Color(0xFFDC4E4E), colorNavigationBar = Color(0xFFEFF3F4))
     val activity = LocalContext.current as Activity
-    var title by remember{ mutableStateOf("Pokedex")}
+    var title by remember { mutableStateOf("Pokedex") }
     val navController = rememberNavController()
 
     Scaffold(

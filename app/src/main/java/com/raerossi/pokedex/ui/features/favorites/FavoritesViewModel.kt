@@ -28,9 +28,12 @@ class FavoritesViewModel @Inject constructor(
 
     fun loadFavoritePokemons() {
         viewModelScope.launch {
-            _isLoading.value = true
-            _favoritesPokemonList.value = getFavoritesPokemonsUseCase()
-            _isLoading.value = false
+            val newFavoritesPokemonList = getFavoritesPokemonsUseCase()
+            if (_favoritesPokemonList.value != newFavoritesPokemonList) {
+                _isLoading.value = true
+                _favoritesPokemonList.value = newFavoritesPokemonList
+                _isLoading.value = false
+            }
         }
     }
 }

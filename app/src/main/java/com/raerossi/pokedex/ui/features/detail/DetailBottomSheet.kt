@@ -54,6 +54,7 @@ import com.raerossi.pokedex.data.remote.model.Types
 import com.raerossi.pokedex.ui.theme.PokedexTheme
 import com.raerossi.pokedex.ui.theme.bottomSheetContainer
 import com.raerossi.pokedex.ui.theme.onBottomSheetContainer
+import com.raerossi.pokedex.ui.theme.primaryKeyColor
 import com.raerossi.pokedex.utils.PokemonTypeUtils
 import com.raerossi.pokedex.utils.extensions.largeShadow
 import kotlinx.coroutines.launch
@@ -170,7 +171,7 @@ private fun LoadingSheet(modifier: Modifier = Modifier) {
         CircularProgressIndicator(
             Modifier
                 .padding(top = 32.dp)
-                .align(Alignment.TopCenter), color = MaterialTheme.colorScheme.primary
+                .align(Alignment.TopCenter), color = MaterialTheme.colorScheme.primaryKeyColor
         )
     }
 }

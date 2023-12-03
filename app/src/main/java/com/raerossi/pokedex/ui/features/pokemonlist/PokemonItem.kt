@@ -39,7 +39,7 @@ fun PokemonItem(
     pokemon: Pokemon,
     onClick: (Pokemon) -> Unit
 ) {
-    var backgroundColor by remember { mutableStateOf(Color.White) }
+    var backgroundColor by remember { mutableStateOf(Color(0xFF2B292B)) }
 
     Card(
         Modifier

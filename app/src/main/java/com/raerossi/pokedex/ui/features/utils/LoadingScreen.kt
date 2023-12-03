@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.raerossi.pokedex.ui.theme.primaryKeyColor
 
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
@@ -18,6 +19,6 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
             .background(color = Color(0xFF2B292B)),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+        CircularProgressIndicator(color = MaterialTheme.colorScheme.primaryKeyColor)
     }
 }
