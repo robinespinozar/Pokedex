@@ -7,6 +7,7 @@ Finally, these project use some libraries like Dagger Hilt,SplashAPI, Retrofit, 
 
 TO DO:
 --------------------
+- Change from LiveData to Flows.
 - Add default screen when not available for show some list of pokemons in HomeScreen and FavoritesScreen.
 - Manage the status when the app don´t have internet because currently down when try to open whitout internet. (fall for the api callback).
 - Add new feature for show the pokemon evolutions.
